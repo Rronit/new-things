@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <style>
+    .tic-tac-toe {}
+
+    .tic-tac-toe .row {
+      display: flex;
+    }
+
+    .cell {
+      width: 30px;
+      height: 30px;
+      border: 1px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tic-tac-toe">
+
+  </div>
+  <script>
+    const gridSize = 3;
+    let player = 'X';
+    const boardRef = document.getElementsByClassName("tic-tac-toe");
+    function changePlayer() {
+      player = player === 'X' ? 'O' : 'X'
+    }
+    function createBoard() {
+      for (j = 0; j < gridSize; j++) {
+        const rowRef = document.createElement("div");
+        rowRef.className = 'row'
+        for (i = 0; i < gridSize; i++) {
+
+          const celRef = document.createElement('div');
+          celRef.className = 'cell'
+          rowRef.appendChild(celRef)
+        }
+        boardRef[0].appendChild(rowRef)
+      }
+    }
+    function addListener() {
+      const boardRef = document.getElementsByClassName("tic-tac-toe")[0];
+      boardRef.addEventListener('click', function (e) {
+        if (e.target.classList.contains('cell')) {
+          console.log(player);
+          e.target.innerText = player;
+          changePlayer()
+        }
+      })
+    }
+    createBoard()
+    addListener()
+  </script>
+
+</body>
+
+</html>
