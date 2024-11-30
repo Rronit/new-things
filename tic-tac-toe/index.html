@@ -32,6 +32,7 @@
     const gridSize = 3;
     let player = 'X';
     const boardRef = document.getElementsByClassName("tic-tac-toe");
+    let gameData = { 'X': [], 'O': [] }
     function changePlayer() {
       player = player === 'X' ? 'O' : 'X'
     }
@@ -43,17 +44,51 @@
 
           const celRef = document.createElement('div');
           celRef.className = 'cell'
+          celRef.dataset.row = j;
+          celRef.dataset.col = i;
           rowRef.appendChild(celRef)
         }
         boardRef[0].appendChild(rowRef)
       }
     }
+    function getWinner(player, row, col) {
+      let playerData = gameData[player];
+      playerData.push({ row, col });
+      if (gameData[player].length < gridSize) return gameData = { ...gameData, [player]: playerData };
+      const initData = { row: playerData[0].row, col: playerData[0].col }
+      let sameCount = 1;
+      for (let i = 1; i < playerData.length; i++) {
+        if (initData.row === playerData[i].row)
+          sameCount++; else sameCount = 1;
+
+      }
+      if (sameCount === gridSize) return alert(`${player} Is Winner`)
+      for (let i = 1; i < playerData.length; i++) {
+        if (initData.col === playerData[i].col)
+          sameCount++; else sameCount = 1;
+
+      }
+      if (sameCount === gridSize) return alert(`${player} Is Winner`)
+      if (initData.row === initData.col) {
+        for (let i = 1; i < playerData.length; i++) {
+          if (playerData[i].row === playerData[i].col)
+            sameCount++;
+        }
+      }
+      if (sameCount === gridSize) return alert(`${player} Is Winner`)
+      else gameData = { ...gameData, [player]: playerData }
+
+    }
+
+
     function addListener() {
       const boardRef = document.getElementsByClassName("tic-tac-toe")[0];
       boardRef.addEventListener('click', function (e) {
         if (e.target.classList.contains('cell')) {
-          console.log(player);
           e.target.innerText = player;
+          const row = e.target.dataset.row;
+          const col = e.target.dataset.col;
+          getWinner(player, row, col)
           changePlayer()
         }
       })
